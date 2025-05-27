@@ -3,6 +3,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useSnackbar } from "notistack"; // IMPORTANTE
 import Logo from "@/components/ui/Logo";
 import LongInput from "@/components/ui/LongInput";
 import LongButton from "@/components/ui/LongButton";
@@ -14,6 +15,8 @@ type LoginFormData = {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar(); // HOOK do notistack
+
   const {
     register,
     handleSubmit,
@@ -34,8 +37,15 @@ export default function LoginPage() {
       if (!res.ok) throw new Error("Credenciais inválidas");
 
       const json = await res.json();
+      enqueueSnackbar("Login bem-sucedido!", { variant: "success" });
       console.log("Login bem-sucedido:", json);
+
+      // Redirecionar após sucesso
+      router.push("/dashboard");
     } catch (err) {
+      enqueueSnackbar("Erro ao logar: " + (err as Error).message, {
+        variant: "error",
+      });
       console.error("Erro ao logar:", err);
     }
   };

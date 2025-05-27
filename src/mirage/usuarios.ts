@@ -6,7 +6,7 @@ export function configurarRotasUsuarios(server: Server) {
     return { usuarios };
   });
 
-  server.post("/api/login", (schema, request) => {
+  server.post("/api/login", (_, request) => {
     const { username, password } = JSON.parse(request.requestBody);
 
     const usuario = usuarios.find(
@@ -18,5 +18,11 @@ export function configurarRotasUsuarios(server: Server) {
     } else {
       return new Response(401, {}, { error: "Credenciais inválidas" });
     }
+  });
+
+  server.post("/api/signup", (_, request) => {
+    console.log(request);
+
+    return new Response(200);
   });
 }
