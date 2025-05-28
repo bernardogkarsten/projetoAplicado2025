@@ -6,8 +6,10 @@ import { makeServer } from "@/mirage/server";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "@/theme/theme";
 import { SnackbarProvider } from "notistack";
+import { Inter } from "next/font/google";
 
 let server: any = null;
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -21,7 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={inter.className}>
       <body>
         <SnackbarProvider maxSnack={3}>
           <ThemeProvider theme={theme}>

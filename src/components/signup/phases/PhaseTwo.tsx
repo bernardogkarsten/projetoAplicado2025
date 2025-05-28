@@ -3,7 +3,7 @@
 import { Box, Stack } from "@mui/material";
 import SportsMotorsportsIcon from "@mui/icons-material/SportsMotorsports";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { IconButton } from "@/components/ui/IconButton";
+import { ButtonIcon } from "@/components/ui/ButtonIcon";
 import DualButton from "@/components/ui/DualButton";
 import LongButton from "@/components/ui/LongButton";
 
@@ -21,13 +21,13 @@ export default function PhaseTwo({
   return (
     <Stack spacing={2} alignItems="center" width="100%">
       <Box display="flex" flexDirection="row" gap={2}>
-        <IconButton
+        <ButtonIcon
           label="Entregador"
           icon={<SportsMotorsportsIcon fontSize="large" />}
           onClick={onEntregador}
         />
 
-        <IconButton
+        <ButtonIcon
           label="Cliente"
           icon={<PersonAddIcon fontSize="large" />}
           onClick={onCliente}

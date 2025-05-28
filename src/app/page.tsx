@@ -3,8 +3,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useSnackbar } from "notistack";
-import axios from "axios";
+import { useSnackbar } from "notistack"; // IMPORTANTE
 import Logo from "@/components/ui/Logo";
 import LongInput from "@/components/ui/LongInput";
 import LongButton from "@/components/ui/LongButton";
@@ -16,7 +15,7 @@ type LoginFormData = {
 
 export default function LoginPage() {
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar(); // HOOK do notistack
 
   const {
     register,
@@ -26,23 +25,37 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const res = await axios.post("/api/login", {
-        username: data.email,
-        password: data.senha,
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: data.email,
+          password: data.senha,
+        }),
       });
+
+      if (!res.ok) throw new Error("Credenciais inválidas");
+
+      const json = await res.json();
 
       enqueueSnackbar("Login bem-sucedido!", { variant: "success" });
-      console.log("Login bem-sucedido:", res.data);
-
-      router.push("/dashboard");
-    } catch (err: any) {
-      const message =
-        err?.response?.data?.message ||
-        "Credenciais inválidas ou erro de rede.";
-      enqueueSnackbar("Erro ao logar: " + message, {
+      switch (json.usuario.category) {
+        case "cliente":
+          router.push("/dashboard/cliente");
+          break;
+        case "motoboy":
+          router.push("/dashboard/motoboy");
+          break;
+        case "admin":
+          router.push("/dashboard/admin");
+          break;
+        default:
+          enqueueSnackbar("Categoria desconhecida!", { variant: "error" });
+      }
+    } catch (err) {
+      enqueueSnackbar("Erro ao logar: " + (err as Error).message, {
         variant: "error",
       });
-      console.error("Erro ao logar:", err);
     }
   };
 
