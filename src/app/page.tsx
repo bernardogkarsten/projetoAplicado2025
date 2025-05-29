@@ -1,9 +1,9 @@
 "use client";
 
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Container, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useSnackbar } from "notistack"; // IMPORTANTE
+import { useSnackbar } from "notistack";
 import Logo from "@/components/ui/Logo";
 import LongInput from "@/components/ui/LongInput";
 import LongButton from "@/components/ui/LongButton";
@@ -15,7 +15,7 @@ type LoginFormData = {
 
 export default function LoginPage() {
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar(); // HOOK do notistack
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     register,

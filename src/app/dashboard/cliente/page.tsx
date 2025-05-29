@@ -10,8 +10,11 @@ import pedidoAndamento from "../../../assets/icon/pedidoAndamento.svg";
 import historicoPedido from "../../../assets/icon/historicoPedido.svg";
 import perfilUsuario from "../../../assets/icon/perfilUsuario.svg";
 import Whatsapp from "@/components/Whatsapp";
+import { useRouter } from "next/navigation";
 
 export default function DashboardCliente() {
+  const router = useRouter();
+
   const handleNovoPedido = () => {
     console.log("novo pedido");
   };
@@ -22,7 +25,7 @@ export default function DashboardCliente() {
     console.log("histórico");
   };
   const handlePerfil = () => {
-    console.log("perfil");
+    router.push("user/cliente");
   };
 
   return (

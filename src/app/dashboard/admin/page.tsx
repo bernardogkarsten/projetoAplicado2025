@@ -10,8 +10,11 @@ import gerenciamentoPerfis from "../../../assets/icon/gerenciamentoPerfis.svg";
 import gerenciamentoPedidos from "../../../assets/icon/gerenciamentoPedidos.svg";
 import perfilUsuario from "../../../assets/icon/perfilUsuario.svg";
 import Whatsapp from "@/components/Whatsapp";
+import { useRouter } from "next/navigation";
 
 export default function DashboardAdmin() {
+  const router = useRouter();
+
   const handleRelatorios = () => {
     console.log("Relatórios");
   };
@@ -22,7 +25,7 @@ export default function DashboardAdmin() {
     console.log("Gerenciamento de pedidos");
   };
   const handlePerfil = () => {
-    console.log("perfil");
+    router.push("user/admin");
   };
 
   return (
