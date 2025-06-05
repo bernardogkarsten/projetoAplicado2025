@@ -8,6 +8,7 @@ import Logo from "@/components/ui/Logo";
 import LongInput from "@/components/ui/LongInput";
 import LongButton from "@/components/ui/LongButton";
 import Link from "next/link";
+import { useLogin } from "@/hooks/pedidos/usuarios/useLogin";
 
 type LoginFormData = {
   email: string;
@@ -24,40 +25,10 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormData>();
 
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: data.email,
-          password: data.senha,
-        }),
-      });
+  const { mutate: login } = useLogin();
 
-      if (!res.ok) throw new Error("Credenciais inválidas");
-
-      const json = await res.json();
-
-      enqueueSnackbar("Login bem-sucedido!", { variant: "success" });
-      switch (json.usuario.category) {
-        case "cliente":
-          router.push("/dashboard/cliente");
-          break;
-        case "motoboy":
-          router.push("/dashboard/motoboy");
-          break;
-        case "admin":
-          router.push("/dashboard/admin");
-          break;
-        default:
-          enqueueSnackbar("Categoria desconhecida!", { variant: "error" });
-      }
-    } catch (err) {
-      enqueueSnackbar("Erro ao logar: " + (err as Error).message, {
-        variant: "error",
-      });
-    }
+  const onSubmit = (data: LoginFormData) => {
+    login({ username: data.email, password: data.senha });
   };
 
   const handleSignupRedirect = () => {

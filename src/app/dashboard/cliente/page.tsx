@@ -19,10 +19,10 @@ export default function DashboardCliente() {
     router.push("cliente/novoPedido");
   };
   const handlePedidosEmAndamento = () => {
-    console.log("pedidos em andamento");
+    router.push("cliente/pedidoAndamento");
   };
   const handleHistorico = () => {
-    console.log("histórico");
+    router.push("cliente/pedidoHistorico");
   };
   const handlePerfil = () => {
     router.push("user/cliente");

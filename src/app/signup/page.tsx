@@ -11,12 +11,16 @@ import { useForm, FormProvider } from "react-hook-form";
 import axios from "axios";
 import LongButton from "@/components/ui/LongButton";
 import PhaseTwo from "../../components/signup/phases/PhaseTwo";
+import { usePostUsuario } from "@/hooks/pedidos/usuarios/useGetUsuarios";
+import { Usuario } from "@/types/usuario";
 
 export default function SignupPage() {
   const [step, setStep] = useState(1);
   const router = useRouter();
 
-  const methods = useForm({
+  const mutation = usePostUsuario();
+
+  const methods = useForm<Usuario>({
     defaultValues: {
       nome: "",
       cpf: "",
@@ -27,7 +31,6 @@ export default function SignupPage() {
       cnh: "",
       email: "",
       senha: "",
-      confirmarSenha: "",
       entregador: true,
     },
   });
@@ -39,7 +42,7 @@ export default function SignupPage() {
       const data = methods.getValues();
 
       try {
-        await axios.post("/api/signup", data);
+        await mutation.mutateAsync(data);
         setStep(5);
       } catch (error) {
         console.error("Erro ao cadastrar:", error);
