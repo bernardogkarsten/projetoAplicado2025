@@ -16,7 +16,7 @@ export default function DashboardCliente() {
   const router = useRouter();
 
   const handleNovoPedido = () => {
-    console.log("novo pedido");
+    router.push("cliente/novoPedido");
   };
   const handlePedidosEmAndamento = () => {
     console.log("pedidos em andamento");

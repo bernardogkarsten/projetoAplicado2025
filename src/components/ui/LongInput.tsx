@@ -1,21 +1,24 @@
 import { TextField, TextFieldProps } from "@mui/material";
+import { ReactNode } from "react";
 
 type LongInputProps = TextFieldProps & {
   label: string;
   type: string;
+  helperText?: ReactNode;
 };
 
-const LongInput = ({ label, type, ...rest }: LongInputProps) => {
+const LongInput = ({ label, type, helperText, ...rest }: LongInputProps) => {
   return (
     <TextField
-      label={label}
-      type={type}
       fullWidth
       variant="outlined"
       sx={{
         width: "80%",
         maxWidth: 300,
       }}
+      label={label}
+      type={type}
+      helperText={helperText}
       {...rest}
     />
   );

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Container, Stack, Typography } from "@mui/material";
 import Logo from "@/components/ui/Logo";
-import DualButton from "@/components/ui/DualButton";
 import PhaseOne from "../../components/signup/phases/PhaseOne";
 import PhaseThree from "../../components/signup/phases/PhaseThree";
 import PhaseFour from "../../components/signup/phases/PhaseFour";

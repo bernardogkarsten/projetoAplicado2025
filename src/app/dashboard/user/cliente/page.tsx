@@ -1,8 +1,8 @@
 "use client";
 
 import HeaderIcon from "@/components/HeaderIcon";
-import DualButton from "@/components/ui/DualButton";
 import LongInput from "@/components/ui/LongInput";
+import Title from "@/components/ui/Title";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
@@ -30,9 +30,7 @@ export default function UserClientePage() {
         }}
       >
         <Stack spacing={2} justifyContent="center" alignItems="center">
-          <Typography color="primary" fontSize={18}>
-            Perfil do usuário
-          </Typography>
+          <Title string={"Novo Pedido"} />
           <LongInput label="Nome" name="nome" type="text" disabled />
           <LongInput label="CPF" name="cpf" type="text" disabled />
           <LongInput label="Telefone" name="telefone" type="tel" disabled />

@@ -7,6 +7,7 @@ interface DualButtonProps {
   onNext?: () => void;
   backLabel?: string;
   nextLabel?: string;
+  disabledNext?: boolean;
 }
 
 export default function DualButton({
@@ -14,6 +15,7 @@ export default function DualButton({
   onNext,
   backLabel = "Voltar",
   nextLabel = "Continuar",
+  disabledNext = false,
 }: DualButtonProps) {
   return (
     <Stack
@@ -28,7 +30,13 @@ export default function DualButton({
       <Button variant="outlined" color="primary" onClick={onBack} fullWidth>
         {backLabel}
       </Button>
-      <Button variant="contained" color="primary" onClick={onNext} fullWidth>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={onNext}
+        fullWidth
+        disabled={disabledNext}
+      >
         {nextLabel}
       </Button>
     </Stack>

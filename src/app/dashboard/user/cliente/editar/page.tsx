@@ -2,6 +2,7 @@
 
 import HeaderIcon from "@/components/HeaderIcon";
 import LongInput from "@/components/ui/LongInput";
+import Title from "@/components/ui/Title";
 
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -29,9 +30,7 @@ export default function UserClientePageEdit() {
         }}
       >
         <Stack spacing={2} justifyContent="center" alignItems="center">
-          <Typography color="primary" fontSize={18}>
-            Editar perfil
-          </Typography>
+          <Title string={"Novo Pedido"} />
           <LongInput label="Nome" type="name" />
           <LongInput label="CPF" type="cpf" />
           <LongInput label="Telefone" type="telefone" />

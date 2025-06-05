@@ -2,6 +2,7 @@
 
 import HeaderIcon from "@/components/HeaderIcon";
 import LongInput from "@/components/ui/LongInput";
+import Title from "@/components/ui/Title";
 
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -30,9 +31,7 @@ export default function UserMotoboyPageEdit() {
         }}
       >
         <Stack spacing={2} justifyContent="center" alignItems="center">
-          <Typography color="primary" fontSize={18}>
-            Editar perfil
-          </Typography>
+          <Title string={"Novo Pedido"} />
           <LongInput label="Nome" name="nome" type="text" />
           <LongInput label="CPF" name="cpf" type="text" />
           <LongInput label="Telefone" name="telefone" type="tel" />

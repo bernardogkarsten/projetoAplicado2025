@@ -7,6 +7,7 @@ import { useSnackbar } from "notistack";
 import Logo from "@/components/ui/Logo";
 import LongInput from "@/components/ui/LongInput";
 import LongButton from "@/components/ui/LongButton";
+import Link from "next/link";
 
 type LoginFormData = {
   email: string;
@@ -91,7 +92,28 @@ export default function LoginPage() {
               label="Senha"
               type="password"
               error={!!errors.senha}
-              helperText={errors.senha?.message}
+              helperText={
+                errors.senha?.message ? (
+                  errors.senha.message
+                ) : (
+                  <Link href="recuperacao" passHref>
+                    <Typography
+                      fontSize={12}
+                      component="span"
+                      sx={{
+                        color: "primary.main",
+                        textDecoration: "none",
+                        "&:hover": {
+                          textDecoration: "underline",
+                        },
+                        cursor: "pointer",
+                      }}
+                    >
+                      Esqueceu a senha?
+                    </Typography>
+                  </Link>
+                )
+              }
               {...register("senha", { required: "Senha é obrigatória" })}
             />
 
