@@ -22,6 +22,10 @@ export default function PedidoPage() {
   const pedidoId = params?.id;
 
   const { data: pedidos, isLoading, isError, error } = useGetPedidos();
+  const usuario =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("usuarioLogado") || "null")
+      : null;
 
   if (isLoading)
     return (
@@ -55,12 +59,24 @@ export default function PedidoPage() {
       </Container>
     );
 
-  const onRepetir = () => {
+  const handleRepetir = () => {
     console.log("repetir");
   };
 
-  const onCancelar = () => {
+  const handleCancelar = () => {
     router.push("/dashboard");
+  };
+
+  const handleAceitar = () => {
+    // lógica de recusar pedido
+  };
+
+  const handleRecusar = () => {
+    // lógica de recusar pedido
+  };
+
+  const handleExcluir = () => {
+    // lógica de excluir pedido
   };
 
   const onBack = () => {
@@ -107,13 +123,44 @@ export default function PedidoPage() {
             />
           </Box>
 
-          <DualButton
-            onNext={onRepetir}
-            onBack={onBack}
-            nextLabel={"Repetir"}
-          />
-          {pedido.status === PedidoStatus.Concluido && (
-            <LongButton label="Cancelar" onClick={onCancelar} />
+          {usuario?.category === "cliente" && (
+            <>
+              <DualButton
+                onNext={handleRepetir}
+                onBack={onBack}
+                nextLabel={"Repetir"}
+              />
+              {pedido.status === PedidoStatus.Concluido && (
+                <LongButton label="Cancelar" onClick={handleCancelar} />
+              )}
+            </>
+          )}
+
+          {usuario?.category === "motoboy" && (
+            <>
+              {pedido.status === PedidoStatus.Concluido ? (
+                <LongButton label="Voltar" onClick={onBack} />
+              ) : (
+                <>
+                  <DualButton
+                    onNext={handleAceitar}
+                    onBack={onBack}
+                    nextLabel={"Aceitar"}
+                  />
+                  <LongButton label="Recusar" onClick={handleRecusar} />
+                </>
+              )}
+            </>
+          )}
+
+          {usuario?.category === "admin" && (
+            <>
+              <DualButton
+                onNext={handleExcluir}
+                onBack={onBack}
+                nextLabel={"Excluir"}
+              />
+            </>
           )}
         </Stack>
       </Container>

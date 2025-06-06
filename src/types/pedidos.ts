@@ -1,6 +1,8 @@
 export interface Pedido {
   id: number;
   id_usuario: number;
+  id_entregador?: number;
+  id_entregadoresRecusado: number[];
   conteudo: string;
   peso: number;
   cep_origem: number;

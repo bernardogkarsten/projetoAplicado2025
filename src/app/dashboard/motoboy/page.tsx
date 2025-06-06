@@ -16,13 +16,13 @@ export default function DashboardMotoboy() {
   const router = useRouter();
 
   const handleNovosPedidos = () => {
-    console.log("novos pedidos");
+    router.push("motoboy/novosPedidos");
   };
   const handlePedidosAtivos = () => {
     console.log("pedidos ativos");
   };
   const handleHistorico = () => {
-    console.log("histórico");
+    router.push("motoboy/historicoPedidos");
   };
   const handlePerfil = () => {
     router.push("user/motoboy");

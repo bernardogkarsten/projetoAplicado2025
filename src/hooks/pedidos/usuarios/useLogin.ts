@@ -26,6 +26,11 @@ export function useLogin() {
   return useMutation({
     mutationFn: postLogin,
     onSuccess: (data) => {
+      const { id, username, password, category } = data.usuario;
+      localStorage.setItem(
+        "usuarioLogado",
+        JSON.stringify({ id, username, password, category })
+      );
       enqueueSnackbar("Login bem-sucedido!", { variant: "success" });
 
       switch (data.usuario.category) {

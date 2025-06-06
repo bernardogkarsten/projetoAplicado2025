@@ -4,6 +4,8 @@ export const pedidos: Pedido[] = [
   {
     id: 1,
     id_usuario: 1,
+    id_entregador: undefined,
+    id_entregadoresRecusado: [],
     conteudo: "Livros escolares",
     peso: 2.5,
     cep_origem: 12345678,
@@ -21,6 +23,8 @@ export const pedidos: Pedido[] = [
   {
     id: 2,
     id_usuario: 1,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Eletrônicos",
     peso: 4.8,
     cep_origem: 11223344,
@@ -38,6 +42,8 @@ export const pedidos: Pedido[] = [
   {
     id: 3,
     id_usuario: 1,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Roupas",
     peso: 1.2,
     cep_origem: 55667788,
@@ -55,6 +61,8 @@ export const pedidos: Pedido[] = [
   {
     id: 4,
     id_usuario: 1,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Material de escritório",
     peso: 3.0,
     cep_origem: 66778899,
@@ -72,6 +80,8 @@ export const pedidos: Pedido[] = [
   {
     id: 5,
     id_usuario: 1,
+    id_entregador: undefined,
+    id_entregadoresRecusado: [],
     conteudo: "Alimentos não perecíveis",
     peso: 6.7,
     cep_origem: 33445566,
@@ -87,10 +97,11 @@ export const pedidos: Pedido[] = [
     data_criacao: "2024-06-05T16:20:00",
   },
 
-  // Concluídos
   {
     id: 6,
     id_usuario: 1,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Livros",
     peso: 1.0,
     cep_origem: 11111111,
@@ -108,6 +119,8 @@ export const pedidos: Pedido[] = [
   {
     id: 7,
     id_usuario: 1,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Notebook",
     peso: 2.5,
     cep_origem: 33333333,
@@ -125,6 +138,8 @@ export const pedidos: Pedido[] = [
   {
     id: 8,
     id_usuario: 1,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Celular",
     peso: 0.5,
     cep_origem: 55555555,
@@ -142,6 +157,8 @@ export const pedidos: Pedido[] = [
   {
     id: 9,
     id_usuario: 1,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Roupas",
     peso: 1.2,
     cep_origem: 77777777,
@@ -159,6 +176,8 @@ export const pedidos: Pedido[] = [
   {
     id: 10,
     id_usuario: 1,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Material de construção",
     peso: 10.0,
     cep_origem: 99999999,
@@ -175,7 +194,9 @@ export const pedidos: Pedido[] = [
   },
   {
     id: 11,
-    id_usuario: 2,
+    id_usuario: 4,
+    id_entregador: undefined,
+    id_entregadoresRecusado: [2],
     conteudo: "Livros para estudo",
     peso: 2.5,
     cep_origem: 12345678,
@@ -192,7 +213,9 @@ export const pedidos: Pedido[] = [
   },
   {
     id: 2,
-    id_usuario: 2,
+    id_usuario: 4,
+    id_entregador: 2,
+    id_entregadoresRecusado: [],
     conteudo: "Comida",
     peso: 2.5,
     cep_origem: 12345678,
