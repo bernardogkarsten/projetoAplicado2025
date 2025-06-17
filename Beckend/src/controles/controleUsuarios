@@ -1,0 +1,65 @@
+const db = require('../db');
+
+exports.getAllUsers = async (req, res, next) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM usuario');
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    const { email, senha } = req.body;
+    const [rows] = await db.query('SELECT * FROM usuario WHERE email = ? AND senha = ?', [email, senha]);
+    if (rows.length > 0) {
+      res.json({ success: true, message: 'Login bem-sucedido', user: rows[0] });
+    } else {
+      res.json({ success: false, message: 'Usuário ou senha inválidos' });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.signup = async (req, res, next) => {
+  try {
+    const {
+      nome, cpf, telefone, email,
+      tipoVeiculo, placa, chassi, cnh,
+      entregador, senha
+    } = req.body;
+    await db.query(
+      `INSERT INTO usuario (nome, cpf, telefone, email, tipoVeiculo, placa, chassi, cnh, entregador, senha)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nome, cpf, telefone, email, tipoVeiculo, placa, chassi, cnh, entregador, senha]
+    );
+    res.json({ success: true, message: 'Usuário cadastrado com sucesso' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.editarUsuario = async (req, res, next) => {
+  try {
+    const { id, nome, telefone, email } = req.body;
+    await db.query(
+      'UPDATE usuario SET nome = ?, telefone = ?, email = ? WHERE id = ?',
+      [nome, telefone, email, id]
+    );
+    res.json({ success: true, message: 'Usuário atualizado com sucesso' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deletarUsuario = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    await db.query('DELETE FROM usuario WHERE id = ?', [id]);
+    res.json({ success: true, message: 'Usuário deletado com sucesso' });
+  } catch (err) {
+    next(err);
+  }
+};
