@@ -1,11 +1,18 @@
-const db = require('../db');
-const path = require('path');
-const fs = require('fs');
+const fakePedidos = [
+  {
+    id: 1,
+    id_usuario: 1,
+    conteudo: "Caixa pequena",
+    peso: 2,
+    status: "Pendente",
+    data_criacao: new Date(),
+    data_finalizacao: null
+  }
+];
 
 exports.getAllPedidos = async (req, res, next) => {
   try {
-    const [rows] = await db.query('SELECT * FROM pedido');
-    res.json({ success: true, data: rows });
+    res.json({ success: true, data: fakePedidos });
   } catch (err) {
     next(err);
   }
@@ -14,8 +21,13 @@ exports.getAllPedidos = async (req, res, next) => {
 exports.mudarStatus = async (req, res, next) => {
   try {
     const { id, status } = req.body;
-    await db.query('UPDATE pedido SET status = ? WHERE id = ?', [status, id]);
-    res.json({ success: true, message: 'Status atualizado com sucesso' });
+    const pedido = fakePedidos.find(p => p.id === parseInt(id));
+    if (pedido) {
+      pedido.status = status;
+      res.json({ success: true, message: 'Status atualizado com sucesso', pedido });
+    } else {
+      res.json({ success: false, message: 'Pedido não encontrado' });
+    }
   } catch (err) {
     next(err);
   }
@@ -24,21 +36,15 @@ exports.mudarStatus = async (req, res, next) => {
 exports.concluirPedido = async (req, res, next) => {
   try {
     const { id, observacao } = req.body;
-    const file = req.file;
-
-    if (!file) {
-      return res.status(400).json({ success: false, message: 'Imagem é obrigatória' });
+    const pedido = fakePedidos.find(p => p.id === parseInt(id));
+    if (pedido) {
+      pedido.status = 'Concluido';
+      pedido.observacao = observacao;
+      pedido.data_finalizacao = new Date();
+      res.json({ success: true, message: 'Pedido concluído com sucesso', pedido });
+    } else {
+      res.json({ success: false, message: 'Pedido não encontrado' });
     }
-
-    const imagePath = `/uploads/${file.filename}`;
-    const dataFinalizacao = new Date();
-
-    await db.query(
-      'UPDATE pedido SET status = ?, observacao = ?, imagem = ?, data_finalizacao = ? WHERE id = ?',
-      ['Concluido', observacao, imagePath, dataFinalizacao, id]
-    );
-
-    res.json({ success: true, message: 'Pedido concluído com sucesso' });
   } catch (err) {
     next(err);
   }
