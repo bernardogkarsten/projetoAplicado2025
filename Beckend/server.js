@@ -1,25 +1,38 @@
 const express = require('express');
-const app = express();
+const dotenv = require('dotenv');
+const path = require('path');
+
 const userRoutes = require('./src/routes/userRoutes');
 const pedidoRoutes = require('./src/routes/pedidoRoutes');
+const loginRoutes = require('./src/routes/loginRoutes');
 const errorHandler = require('./src/middlewares/errorHandler');
-const path = require('path');
-require('dotenv').config();
 
+dotenv.config();
+
+const app = express();
+
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Expor pasta uploads
+// Pasta de uploads (se necessário)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Rotas
+// Rotas da API
+app.use('/api', loginRoutes);
 app.use('/api', userRoutes);
 app.use('/api', pedidoRoutes);
 
-// Middleware de erro
+// Rota de teste
+app.get('/', (req, res) => {
+  res.send('API funcionando!');
+});
+
+// Middleware de tratamento de erros
 app.use(errorHandler);
 
+// Iniciar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${3000}`);
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
