@@ -109,6 +109,39 @@ exports.editarUsuario = async (req, res, next) => {
   }
 };
 
+//Atualizar senha com hash
+exports.alterarSenha = async (req, res, next) => {
+  try {
+    const { email, senha_atual, nova_senha } = req.body;
+
+    if (!email || !senha_atual || !nova_senha) {
+      return res.status(400).json({ success: false, message: 'Todos os campos são obrigatórios' });
+    }
+
+    const [[usuario]] = await pool.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
+
+    if (!usuario) {
+      return res.status(404).json({ success: false, message: 'Usuário não encontrado' });
+    }
+
+    const senhaCorreta = await bcrypt.compare(senha_atual, usuario.senha_hash);
+    if (!senhaCorreta) {
+      return res.status(401).json({ success: false, message: 'Senha atual incorreta' });
+    }
+
+    const novaHash = await bcrypt.hash(nova_senha, 10);
+
+    await pool.query(
+      'UPDATE Usuarios SET senha_hash = ? WHERE email = ?',
+      [novaHash, email]
+    );
+
+    res.json({ success: true, message: 'Senha atualizada com sucesso' });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // Deletar usuário
 exports.deletarUsuario = async (req, res, next) => {
   try {
