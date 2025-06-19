@@ -3,22 +3,22 @@ const router = express.Router();
 const pedidoController = require('../controllers/pedidoController');
 const auth = require('../middlewares/authMiddleware');
 
-// Criar novo pedido (requer autenticação)
+// Criar novo pedido
 router.post('/pedidos', auth, pedidoController.criarPedido);
 
-// Listar todos os pedidos (requer autenticação)
+// Listar todos os pedidos
 router.get('/pedidos', auth, pedidoController.listarPedidos);
 
-// Filtrar pedidos por cliente, motoboy ou status (requer autenticação)
+// Filtrar pedidos por cliente, motoboy ou status
 router.get('/pedidos/filtro', auth, pedidoController.filtrarPedidos);
 
-// Atualizar status de pedido e salvar histórico (requer autenticação)
+// Atualizar status de pedido e salvar histórico
 router.put('/pedidos/status', auth, pedidoController.atualizarStatus);
 
-// Ver histórico de um pedido (requer autenticação)
+// Ver histórico de um pedido
 router.get('/pedidos/:id_pedido/historico', auth, pedidoController.historicoPedido);
 
-//mudar status
-router.put('/pedidos/mudarStatus', auth, pedidoController.mudarStatus);
+// Concluir pedido (enviar imagem base64 + marcar como entregue)
+router.put('/pedidos/concluir', auth, pedidoController.concluirPedido);
 
 module.exports = router;

@@ -1,5 +1,6 @@
-
 const pool = require('../config/db');
+const path = require('path');
+const fs = require('fs');
 
 // Criar novo pedido
 exports.criarPedido = async (req, res, next) => {
@@ -33,7 +34,7 @@ exports.criarPedido = async (req, res, next) => {
   }
 };
 
-// Buscar todos os pedidos
+// Listar todos os pedidos
 exports.listarPedidos = async (req, res, next) => {
   try {
     const [pedidos] = await pool.query('SELECT * FROM Pedidos');
@@ -43,7 +44,7 @@ exports.listarPedidos = async (req, res, next) => {
   }
 };
 
-// Filtrar por cliente, motoboy ou status
+// Filtrar pedidos
 exports.filtrarPedidos = async (req, res, next) => {
   try {
     const { cliente_id, motoboy_id, status } = req.query;
@@ -72,7 +73,7 @@ exports.filtrarPedidos = async (req, res, next) => {
   }
 };
 
-// Atualizar status do pedido e salvar histórico
+// Atualizar status do pedido
 exports.atualizarStatus = async (req, res, next) => {
   try {
     const { id_pedido, status, motoboy_id } = req.body;
@@ -83,8 +84,7 @@ exports.atualizarStatus = async (req, res, next) => {
     );
 
     await pool.query(
-      `INSERT INTO HistoricoEntregas (pedido_id, status)
-       VALUES (?, ?)`,
+      `INSERT INTO HistoricoEntregas (pedido_id, status) VALUES (?, ?)`,
       [id_pedido, status]
     );
 
@@ -94,7 +94,7 @@ exports.atualizarStatus = async (req, res, next) => {
   }
 };
 
-// Obter histórico de entregas de um pedido
+// Histórico de entregas
 exports.historicoPedido = async (req, res, next) => {
   try {
     const { id_pedido } = req.params;
@@ -108,26 +108,39 @@ exports.historicoPedido = async (req, res, next) => {
   }
 };
 
-// mudar status do pedido 
-exports.mudarStatus = async (req, res, next) => {
+// Concluir pedido com imagem base64
+exports.concluirPedido = async (req, res, next) => {
   try {
-    const { id_pedido, status, motoboy_id } = req.body;
+    const { id_pedido, imagem_base64 } = req.body;
 
-    if (!id_pedido || !status) {
-      return res.status(400).json({ success: false, message: 'id_pedido e status são obrigatórios' });
+    if (!id_pedido || !imagem_base64) {
+      return res.status(400).json({ success: false, message: 'Dados obrigatórios ausentes' });
     }
 
+    const base64Data = imagem_base64.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    const nomeArquivo = `comprovante_${id_pedido}_${Date.now()}.jpg`;
+    const caminho = path.join(__dirname, '..', '..', 'uploads', nomeArquivo);
+
+    fs.writeFileSync(caminho, buffer);
+
     await pool.query(
-      `UPDATE Pedidos SET status = ?, motoboy_id = ? WHERE id_pedido = ?`,
-      [status, motoboy_id || null, id_pedido]
+      `UPDATE Pedidos 
+       SET status = 'entregue',
+           comprovante_entrega = ?, 
+           data_finalizacao = NOW()
+       WHERE id_pedido = ?`,
+      [nomeArquivo, id_pedido]
     );
 
     await pool.query(
-      `INSERT INTO HistoricoEntregas (pedido_id, status) VALUES (?, ?)`,
-      [id_pedido, status]
+      `INSERT INTO HistoricoEntregas (pedido_id, status) VALUES (?, 'entregue')`,
+      [id_pedido]
     );
 
-    res.json({ success: true, message: 'Status do pedido atualizado com sucesso' });
+    res.json({ success: true, message: 'Pedido concluído com sucesso' });
+
   } catch (err) {
     next(err);
   }

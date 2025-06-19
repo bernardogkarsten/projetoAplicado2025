@@ -114,6 +114,16 @@ exports.deletarUsuario = async (req, res, next) => {
   try {
     const { id_usuario } = req.body;
 
+  // Verifica se há pedidos vinculados a este usuário
+    const [pedidos] = await pool.query('SELECT COUNT(*) AS total FROM Pedidos WHERE cliente_id = ?', [id_usuario]);
+    if (pedidos[0].total > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Não é possível deletar o usuário. Existem pedidos associados a este usuário.'
+      });
+    }
+
+    // Se não houver, prossegue com a exclusão
     await pool.query('DELETE FROM Usuarios WHERE id_usuario = ?', [id_usuario]);
 
     res.json({ success: true, message: 'Usuário deletado com sucesso' });

@@ -70,6 +70,16 @@ exports.deletarMotoboy = async (req, res, next) => {
   try {
     const { id } = req.params;
 
+// Verifica se há pedidos atribuídos a este motoboy
+    const [pedidos] = await pool.query('SELECT COUNT(*) AS total FROM Pedidos WHERE motoboy_id = ?', [id]);
+    if (pedidos[0].total > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Não é possível deletar o motoboy. Existem pedidos associados a este motoboy.'
+      });
+    }
+
+    // Se não houver pedidos associados, pode deletar
     await pool.query('DELETE FROM Motoboys WHERE id_motoboys = ?', [id]);
 
     res.json({ success: true, message: 'Motoboy deletado com sucesso' });
