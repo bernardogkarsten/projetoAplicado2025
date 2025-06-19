@@ -31,6 +31,16 @@ exports.signup = async (req, res, next) => {
     });
 
   } catch (err) {
+     if (err.code === 'ER_DUP_ENTRY') {
+      let campo = '';
+      if (err.message.includes('cpf')) campo = 'CPF';
+      else if (err.message.includes('email')) campo = 'Email';
+
+      return res.status(400).json({
+        success: false,
+        message: `${campo} já cadastrado`
+      });
+    }
     next(err);
   }
 };
